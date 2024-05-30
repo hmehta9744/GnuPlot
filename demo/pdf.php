@@ -2,7 +2,7 @@
 
 include ('../GnuPlot.php');
 
-use Gregwar\GnuPlot\GnuPlot;
+use GnuPlot\GnuPlot;
 
 $plot = new GnuPlot;
 

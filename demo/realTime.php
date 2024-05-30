@@ -2,13 +2,13 @@
 
 include ('../GnuPlot.php');
 
-use Gregwar\GnuPlot\GnuPlot;
+use GnuPlot\GnuPlot;
 
 $alpha = 0;
 $plot = new GnuPlot;
 
 while (true) {
-    usleep(50000);
+    //usleep(50000);
     $plot->reset();
     $plot->setGraphTitle('The magic sinuses');
     $plot->setTitle(0, 'The moving sinus');
@@ -21,4 +21,4 @@ while (true) {
     $plot->refresh();
 }
 
-sleep(1000);
+// sleep(1000);

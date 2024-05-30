@@ -1,4 +1,4 @@
-<?php namespace Gregwar\GnuPlot;
+<?php namespace GnuPlot;
 
 class GnuPlot {
 	// Available units
