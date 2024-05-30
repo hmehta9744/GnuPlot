@@ -1,16 +1,17 @@
 <?php namespace GnuPlot;
 
-class GnuPlot {
-	// Available units
-	const UNIT_BLANK	= '';
-	const UNIT_INCH 	= 'in';
-	const UNIT_CM		= 'cm';
-	
-	// Available terminals
-	const TERMINAL_PNG	= 'png';
-	const TERMINAL_PDF	= 'pdf';
-	const TERMINAL_EPS	= 'eps';
-	
+class GnuPlot
+{
+    // Available units
+    const UNIT_BLANK = '';
+    const UNIT_INCH = 'in';
+    const UNIT_CM = 'cm';
+
+    // Available terminals
+    const TERMINAL_PNG = 'png';
+    const TERMINAL_PDF = 'pdf';
+    const TERMINAL_EPS = 'eps';
+
     // Values as an array
     protected $values = array();
 
@@ -28,9 +29,9 @@ class GnuPlot {
 
     // Plot height
     protected $height = 800;
-	
-	// Size unit.
-	protected $unit = self::UNIT_BLANK;
+
+    // Size unit.
+    protected $unit = self::UNIT_BLANK;
 
     // Was it already plotted?
     protected $plotted = false;
@@ -154,16 +155,16 @@ class GnuPlot {
 
         return $this;
     }
-	
-	/**
+
+    /**
      * Sets the graph size unit. You can use one of the UNIT_ constants defined in this class.
      */
-	public function setUnit($unit)
-	{
-		$this->unit = $unit;
+    public function setUnit($unit)
+    {
+        $this->unit = $unit;
 
-		return $this;
-	}
+        return $this;
+    }
 
     /**
      * Sets the graph title
@@ -184,40 +185,40 @@ class GnuPlot {
         $this->sendCommand('set terminal dumb');
 
         if ($this->title) {
-            $this->sendCommand('set title "'.$this->title.'"');
+            $this->sendCommand('set title "' . $this->title . '"');
         }
 
         if ($this->xlabel) {
-            $this->sendCommand('set xlabel "'.$this->xlabel.'"');
+            $this->sendCommand('set xlabel "' . $this->xlabel . '"');
         }
 
         if ($this->timeFormat) {
             $this->sendCommand('set xdata time');
-            $this->sendCommand('set timefmt "'.$this->timeFormat.'"');
+            $this->sendCommand('set timefmt "' . $this->timeFormat . '"');
             $this->sendCommand('set xtics rotate by 45 offset -6,-3');
             if ($this->timeFormatString) {
-                $this->sendCommand('set format x "'.$this->timeFormatString.'"');
+                $this->sendCommand('set format x "' . $this->timeFormatString . '"');
             }
         }
 
         if ($this->ylabel) {
-            $this->sendCommand('set ylabel "'.$this->ylabel.'"');
+            $this->sendCommand('set ylabel "' . $this->ylabel . '"');
         }
 
         if ($this->yformat) {
-            $this->sendCommand('set format y "'.$this->yformat.'"');
+            $this->sendCommand('set format y "' . $this->yformat . '"');
         }
 
         if ($this->xrange) {
-            $this->sendCommand('set xrange ['.$this->xrange[0].':'.$this->xrange[1].']');
+            $this->sendCommand('set xrange [' . $this->xrange[0] . ':' . $this->xrange[1] . ']');
         }
 
         if ($this->yrange) {
-            $this->sendCommand('set yrange ['.$this->yrange[0].':'.$this->yrange[1].']');
+            $this->sendCommand('set yrange [' . $this->yrange[0] . ':' . $this->yrange[1] . ']');
         }
 
         foreach ($this->labels as $label) {
-            $this->sendCommand('set label "'.$label[2].'" at '.$label[0].', '.$label[1]);
+            $this->sendCommand('set label "' . $label[2] . '" at ' . $label[0] . ', ' . $label[1]);
         }
     }
 
@@ -229,22 +230,22 @@ class GnuPlot {
         if ($replot) {
             $this->sendCommand('replot');
         } else {
-            $this->sendCommand('plot '.$this->getUsings());
+            $this->sendCommand('plot ' . $this->getUsings());
         }
         $this->plotted = true;
         $this->sendData();
     }
-	
-	/**
+
+    /**
      * Write the current plot to a file
      */
-	public function write($terminal, $file)
-	{
-		$this->sendInit();
-		$this->sendCommand("set terminal $terminal size {$this->width}{$this->unit}, {$this->height}{$this->unit}");
-		$this->sendCommand('set output "'.$file.'"');
-		$this->plot();
-	}
+    public function write($terminal, $file)
+    {
+        $this->sendInit();
+        $this->sendCommand("set terminal $terminal size {$this->width}{$this->unit}, {$this->height}{$this->unit}");
+        $this->sendCommand('set output "' . $file . '"');
+        $this->plot();
+    }
 
     /**
      * Write the current plot to a PNG file
@@ -253,22 +254,22 @@ class GnuPlot {
     {
         $this->write(self::TERMINAL_PNG, $file);
     }
-	
-	/**
+
+    /**
      * Write the current plot to a PDF file
      */
-	public function writePDF($file)
-	{
-		$this->write(self::TERMINAL_PDF, $file);
-	}
-	
-	/**
+    public function writePDF($file)
+    {
+        $this->write(self::TERMINAL_PDF, $file);
+    }
+
+    /**
      * Write the current plot to an EPS file
      */
-	public function writeEPS($file)
-	{
-		$this->write(self::TERMINAL_EPS, $file);
-	}
+    public function writeEPS($file)
+    {
+        $this->write(self::TERMINAL_EPS, $file);
+    }
 
     /**
      * Write the current plot to a file
@@ -276,7 +277,7 @@ class GnuPlot {
     public function get($format = self::TERMINAL_PNG)
     {
         $this->sendInit();
-		$this->sendCommand("set terminal $format size {$this->width}{$this->unit}, {$this->height}{$this->unit}");
+        $this->sendCommand("set terminal $format size {$this->width}{$this->unit}, {$this->height}{$this->unit}");
         fflush($this->stdout);
         $this->plot();
 
@@ -288,8 +289,8 @@ class GnuPlot {
             $data = fread($this->stdout, 128);
             $result .= $data;
             usleep(5000);
-            $timeout-=5;
-        } while ($timeout>0 || $data);
+            $timeout -= 5;
+        } while ($timeout > 0 || $data);
 
         return $result;
     }
@@ -386,10 +387,10 @@ class GnuPlot {
     {
         $usings = array();
 
-        for ($i=0; $i<count($this->values); $i++) {
-            $using = '"-" using 1:2 with '.$this->mode;
+        for ($i = 0; $i < count($this->values); $i++) {
+            $using = '"-" using 1:2 with ' . $this->mode;
             if (isset($this->titles[$i])) {
-                $using .= ' title "'.$this->titles[$i].'"';
+                $using .= ' title "' . $this->titles[$i] . '"';
             }
             $usings[] = $using;
         }
@@ -406,7 +407,7 @@ class GnuPlot {
         foreach ($this->values as $index => $data) {
             foreach ($data as $xy) {
                 list($x, $y) = $xy;
-                $this->sendCommand($x.' '.$y);
+                $this->sendCommand($x . ' ' . $y);
             }
             $this->sendCommand('e');
         }
