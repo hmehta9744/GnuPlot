@@ -18,9 +18,6 @@ class GnuPlot
     // Time format if X data is time
     protected $timeFormat = null;
 
-    // Time presentation format for X, if $timeFormat is set
-    protected $timeFormatString = null;
-
     // Display mode
     protected $mode = 'line';
 
@@ -195,10 +192,9 @@ class GnuPlot
         if ($this->timeFormat) {
             $this->sendCommand('set xdata time');
             $this->sendCommand('set timefmt "' . $this->timeFormat . '"');
-            $this->sendCommand('set xtics rotate by 45 offset -6,-3');
-            if ($this->timeFormatString) {
-                $this->sendCommand('set format x "' . $this->timeFormatString . '"');
-            }
+            //$this->sendCommand('set xtics rotate by 45 offset -6,-3');
+            $this->sendCommand('set xtics rotate by 20 offset -3.5,-2');
+            $this->sendCommand('set format x "' . $this->timeFormat . '"');
         }
 
         if ($this->ylabel) {
@@ -339,13 +335,6 @@ class GnuPlot
     public function setXTimeFormat($timeFormat)
     {
         $this->timeFormat = $timeFormat;
-
-        return $this;
-    }
-
-    public function setTimeFormatString($timeFormatString)
-    {
-        $this->timeFormatString = $timeFormatString;
 
         return $this;
     }
